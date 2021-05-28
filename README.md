@@ -26,14 +26,14 @@ There are a lot of applications that can help people schedule their timetable, b
 ### Plan:
 1st week of June: A basic login in system
 2nd week of June: The main interface of the website
-3rd week of June: Basic functionality of the website, including recording and presenting 					  data that users import
+3rd week of June: Basic functionality of the website, including recording and presenting data that users import
 4th week of June: Testing and debuging
 1st week of July: Implementation of peer teams’ suggestions
 2nd week of July: Implementation of the team-work functionality
 3rd week of July: Testing and debugging
 4th week of July: Final enhancement
 
-###Tech Stack
+### Tech Stack
 1. HTML/CSS/Javascript
 2. Python flask
 
