@@ -22,19 +22,19 @@ def register():
         error = None
 
         if not email:
-            error = 'Email is required'
+            error = 'Email is required!'
         elif not username:
-            error = 'Username is required.'
+            error = 'Username is required!'
         elif not password:
-            error = 'Password is required.'
+            error = 'Password is required!'
         elif not confirmPassword:
-            error = 'Comfirm Password is required.'
+            error = 'Comfirm Password is required!'
         elif not password == confirmPassword:
-            error = 'Those passwords didn’t match.'
+            error = 'Those passwords didn’t match!'
         elif db.execute(
                 'SELECT id FROM user WHERE username = ?', (username,)
         ).fetchone() is not None:
-            error = 'User {} is already registered.'.format(username)
+            error = 'User {} is already registered!'.format(username)
 
         if error is None:
             db.execute(
@@ -61,9 +61,9 @@ def login():
         ).fetchone()
 
         if user is None:
-            error = 'Incorrect username.'
+            error = 'Incorrect username!'
         elif not check_password_hash(user['password'], password):
-            error = 'Incorrect password.'
+            error = 'Incorrect password!'
 
         if error is None:
             session.clear()
