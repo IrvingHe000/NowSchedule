@@ -1,6 +1,5 @@
 # Nowschedule
 
-
 ### Proposed Level of Achievement: 
 Vostok
 
@@ -22,6 +21,8 @@ There are a lot of applications that can help people schedule their timetable, b
 - Allow NUS users to check and select the times, venues of their modules.
 - Presenting users' tasks and events as a graphical timetable.
 - Allow a group of users finding their common free time in order to help them arrange meetings.
+
+
 
 ### Plan:
 - 1st week of June: A basic login in system
