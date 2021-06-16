@@ -11,7 +11,7 @@ header {
   width: 30%;
   float: left;
   height: 1040px;
-  width: 585px;  
+  width: 585px;
   background-image: url("../static/img/IMG_20210525_215844.jpg");
   background-size: 100% 100%;
 }
@@ -95,7 +95,7 @@ form {
 
 
 .form-wrap .form-group input {
-  
+
   width: 80%;
   padding: 12px 10px;
   margin: 8px 40px;
@@ -104,10 +104,6 @@ form {
   border-radius: 4px;
   box-sizing: border-box;
 }
-
-
- 
-
 
 .form-wrap button {
     border-radius: 3px;
