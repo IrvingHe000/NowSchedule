@@ -110,5 +110,5 @@ def main():
 
 
 @auth.route('/<userName>')
-def userpage(userName):
+def userPage(userName):
     return render_template('user.html', userName=userName)
