@@ -1,7 +1,10 @@
+var events = new Map();
+var num = 0;
+
 document.querySelector('.clear-tasks').addEventListener('click',
 clearAll);
 
-const colors = ['darkorange', 'aqua', 'crimson', 'cadetblue', 'deepskyblue', 'dodgerblue'];
+const colors = ["rgb(181, 196, 177)", "rgb(224,229,223)", "rgb(122, 114, 129)", "rgb(150, 84, 84)", "rgb(134, 150, 167)"];
 
 const today = new Date();
 let deleteIcons = document.querySelectorAll('.delete-item');
@@ -49,37 +52,7 @@ function initilize() {
     }
 }
 
-function insertNewTaskPeriod(e) {
-    e.preventDefault();
-    const inputStartTime = document.getElementById('start-period').value;
-    const inputEndTime = document.getElementById('end-period').value;
-    const inputTask = document.getElementById('task-period').value;
-    const inputDate = document.getElementById('date-period').value;
-    const date = new Date(inputDate);
 
-    if (isSameWeek(date, today)) {
-        periodAddToTimetable(date, inputStartTime, inputEndTime, inputTask);
-    }
-
-    if (inputTask.value === "") {
-        periodType.style.display = 'none';
-        return;
-    }
-    const item = document.createElement("li");
-    item.setAttribute('class', "collection-item");
-    const text = document.createTextNode(inputTask);
-    const link = document.createElement("a");
-    link.setAttribute("href", "#");
-    link.setAttribute("class", "delete-item secondary-content")
-    const icon = svgIcon.cloneNode(true);
-    link.appendChild(icon);
-    item.appendChild(text);
-    item.appendChild(link);
-    tasks.appendChild(item);
-    selectTaskType.style.display = 'block';
-    periodType.style.display = 'none';
-    initilize();
-}
 
 function randomColor(){
     let r = Math.floor(Math.random()*256);
@@ -99,9 +72,7 @@ function isSameWeek(timeStampA, timeStampB) {
     return parseInt((old_count + 4) / 7) == parseInt((now_other + 4) / 7);
 }
 
-function ddlAddToTimetable(date, ddl, inputTask) {
-    return periodAddToTimetable(date, ddl, ddl, inputTask);
-}
+
 
 function periodAddToTimetable(date, start, end, inputTask) {
     console.log(start);
@@ -110,7 +81,7 @@ function periodAddToTimetable(date, start, end, inputTask) {
     var startmin = start.substr(3, 2);
     var endhour = end.substr(0, 2);
     var endmin = end.substr(3, 2);
-    const color = colors[Math.floor(Math.random()*6)]
+    var color = colors[Math.floor(Math.random()*6)]
     if (starthour < 6 && endhour > 6) {
         starthour = 6;
         startmin = 0;
@@ -125,47 +96,65 @@ function periodAddToTimetable(date, start, end, inputTask) {
         weekday = 7;
     }
     const dayTimetable = document.querySelector('#timetable-mainBody');
-    const middle = Math.floor((endhour - starthour) / 2);
 
-    for (let hour = starthour - 6, j = 0; hour <= endhour - 6; hour++, j++) {
-        var height = '101%';
-        if (starthour === endhour) {
-            height = 100 * (endmin - startmin) / 60.0 + 1 + '%';
+    let minHeight = ((60 - startmin) / 60.0 + endmin / 60.0) * 65;
+    let hourHeight = (endhour - starthour - 1) * 65;
+    let h = minHeight + hourHeight;
+    let height = h + "px";
+    let timetableRow = dayTimetable.children[starthour - 6];
+    let timetableGrid = timetableRow.children[weekday];
+    let newGrid = example.cloneNode(true);
 
-        } else if (j === 0) {
-            height = 100 * (60 - startmin) / 60.0 + 1+ '%';
-        } else if (hour === endhour - 6) {
-            height = 100 * endmin / 60.0 + 1 + '%';
-        }
-        var timetableRow = dayTimetable.children[hour];
-        console.log(weekday);
-        var timetableGrid = timetableRow.children[weekday];
-        var newGrid = example.cloneNode(true);
+    newGrid.style.display = "block";
+    newGrid.childNodes[1].textContent = inputTask;
+    newGrid.style.height = height;
+    newGrid.style.position = 'absolute';
+    newGrid.style.top = startmin * 65.0 / 60.0 + 'px';
+    newGrid.childNodes[1].style.borderStyle = "solid none solid none";
+    newGrid.childNodes[1].style.borderRadius = "5px"
+    newGrid.childNodes[1].style.borderColor = "black";
+    newGrid.childNodes[1].style.backgroundColor = color;
+    timetableGrid.style.position = 'relative';
+    timetableGrid.appendChild(newGrid);
+    return newGrid;
+}
 
-        newGrid.style.display = "block";
-        if (j == middle) {
-            newGrid.childNodes[1].textContent = inputTask;
-        }
+function insertNewTaskPeriod(e) {
+    e.preventDefault();
+    const inputStartTime = document.getElementById('start-period').value;
+    const inputEndTime = document.getElementById('end-period').value;
+    const inputTask = document.getElementById('task-period').value;
+    const inputDate = document.getElementById('date-period').value;
+    const date = new Date(inputDate);
+    var grid = null;
 
-        newGrid.style.height = height;
-        newGrid.style.position = 'absolute';
-        console.log(newGrid);
-        console.log(timetableGrid);
-        if (starthour === endhour) {
-            newGrid.style.top =  startmin * 65.0 / 60.0 + 'px';
-        } else if (j === 0) {
-            newGrid.style.top = startmin * 65.0 / 60.0 + 'px';
-            newGrid.childNodes[1].style.borderStyle = "solid solid none solid";
-        } else if (hour === endhour - 6) {
-            newGrid.childNodes[1].style.borderStyle = "none solid solid solid";
-        } else {
-            newGrid.childNodes[1].style.borderStyle = "none solid none solid";
-        }
-        newGrid.childNodes[1].style.borderColor = color;
-        newGrid.childNodes[1].style.backgroundColor = color;
-        timetableGrid.style.position = 'relative';
-        timetableGrid.appendChild(newGrid);
+    if (isSameWeek(date, today)) {
+        grid = periodAddToTimetable(date, inputStartTime, inputEndTime, inputTask);
     }
+
+    if (inputTask.value === "") {
+        periodType.style.display = 'none';
+        return;
+    }
+    const item = document.createElement("li");
+    item.setAttribute('class', "collection-item");
+    const text = document.createTextNode(inputTask);
+    const link = document.createElement("a");
+    link.setAttribute("href", "#");
+    link.setAttribute("class", "delete-item secondary-content")
+    const icon = svgIcon.cloneNode(true);
+    link.appendChild(icon);
+    item.appendChild(text);
+    item.appendChild(link);
+    item.setAttribute('id', num);
+    num++;
+    tasks.appendChild(item);
+    selectTaskType.style.display = 'block';
+    periodType.style.display = 'none';
+    if (grid !== null) {
+        events.set(item, grid);
+    }
+    initilize();
 }
 
 function insertNewTaskDdl(e) {
@@ -174,9 +163,10 @@ function insertNewTaskDdl(e) {
     const inputDate = document.getElementById('date-ddl').value;
     const ddl = document.getElementById('ddl').value;
     const date = new Date(inputDate);
+    var grid = null;
 
     if (isSameWeek(date, today)) {
-        ddlAddToTimetable(date, ddl, inputTask);
+         grid = ddlAddToTimetable(date, ddl, inputTask);
     }
     if (inputTask === "") {
         deadlineType.style.display = 'none';
@@ -192,20 +182,34 @@ function insertNewTaskDdl(e) {
     link.appendChild(icon);
     item.appendChild(text);
     item.appendChild(link);
+    item.setAttribute('id', num);
+    num++;
     tasks.appendChild(item);
     deadlineType.style.display = 'none';
+    if (grid !== null) {
+        events.set(item, grid);
+    }
     initilize();
 }
 
+function ddlAddToTimetable(date, ddl, inputTask) {
+    return periodAddToTimetable(date, ddl, ddl, inputTask);
+}
+
 function clear(e) {
-    let item = e.target;
+    let item;
     if (e.target.tagName === 'path') {
-        e.target.parentElement.parentElement.parentElement.remove();
+        item = e.target.parentElement.parentElement.parentElement;
     } else if (e.target.tagName === 'svg') {
-        e.target.parentElement.parentElement.remove();
+        item = e.target.parentElement.parentElement;
     } else if (e.target.tagName === 'a') {
-        e.target.parentElement.remove();
+        item = e.target.parentElement;
     }
+    console.log(item);
+    const grid = events.get(item);
+    grid.remove();
+    item.remove();
+    events.delete(item);
     initilize();
 }
 
@@ -214,8 +218,13 @@ function clearAll(e) {
     const tasks = document.querySelector('.collection').children;
     const length = tasks.length
     for (let i = 0; i < length; i++) {
+        if (events.get(tasks[0])) {
+            events.get(tasks[0]).remove();
+        }
         tasks[0].remove();
     }
+    num = 0;
+    events = new Map();
     initilize();
 }
 

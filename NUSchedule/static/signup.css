@@ -43,8 +43,8 @@ a {
 
 #container {
   float: left;
-  width: 1207px;
-  height: 1040px;
+  width: 67.35%;
+  height: 100%;
 }
 
 #container h1 {
@@ -68,9 +68,9 @@ a {
 
 form {
   margin-top: 20px;
-  margin-left: 410px;
+  margin-left: 34%;
   display: block;
-  width: 400px;
+  width: 33%;
   border:black solid 2px;
   border-radius: 10px;
 }
@@ -78,7 +78,7 @@ form {
 .form-wrap h1,
 .form-wrap p {
     display: block;
-    width: 300px;
+    width: 25%;
     margin: auto;
     text-align: center;
 }
