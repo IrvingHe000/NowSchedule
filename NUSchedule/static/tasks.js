@@ -1,8 +1,7 @@
 var events = new Map();
 var num = 0;
 
-document.querySelector('.clear-tasks').addEventListener('click',
-clearAll);
+document.getElementById("clear-tasks").addEventListener('click', clearAll);
 
 const colors = ["rgb(181, 196, 177)", "rgb(224,229,223)", "rgb(122, 114, 129)", "rgb(150, 84, 84)", "rgb(134, 150, 167)"];
 
@@ -193,7 +192,9 @@ function insertNewTaskDdl(e) {
 }
 
 function ddlAddToTimetable(date, ddl, inputTask) {
-    return periodAddToTimetable(date, ddl, ddl, inputTask);
+    var grid = periodAddToTimetable(date, ddl, ddl, inputTask);
+    grid.childNodes[1].style.borderColor = "red";
+    return grid;
 }
 
 function clear(e) {
@@ -234,3 +235,15 @@ function setDate() {
     const navbarDate = document.querySelector('#navbar-date');
     navbarDate.textContent = date.toDateString();
 }
+
+const viewTasks = document.getElementById('show-existing-tasks');
+
+viewTasks.addEventListener('click', showTasks);
+
+function showTasks(e) {
+    e.preventDefault();
+    viewTasks.style.display = "none";
+    document.getElementById("existing-tasks").style.display = "block";
+}
+
+setDate();

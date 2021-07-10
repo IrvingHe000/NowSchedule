@@ -14,8 +14,8 @@
     </ul>
 {% endblock %}
 {% block content %}
-    <div class = "container" id="timetable-container" style="display: inline-block; width: 70%; border:2px solid black;
-            border-radius: 5px; height: 830px; overflow: auto; margin:40px 45px">
+    <div class = "container card" id="timetable-container" style="display: inline-block; width: 70%; border:2px solid black;
+            border-radius: 5px; height: 830px; overflow: auto; margin:40px 45px; opacity: 90%;">
         <div style="text-align: center;margin-top: 20px;margin-bottom: 10px">
             <span>
                 <h2 style="display:inline-block;padding-right: 20px">Timetable</h2>
@@ -254,7 +254,7 @@
         </div>
     </div>
     <div class = "card" style="width: 20%; height: 830px; float: right; border:2px solid black; border-radius: 5px;
-    overflow: auto; margin-top:40px; margin-right: 45px; overflow: auto;">
+    overflow: auto; margin-top:40px; margin-right: 45px; overflow: auto; opacity: 90%">
         <div style="text-align: center;margin-top: 20px;margin-bottom: 10px">
                 <h2 style="display: inline-block; margin-bottom: 0px; margin-right:20px">Tasks List</h2>
                 <svg style="margin-bottom: 14px" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-calendar-check-fill" viewBox="0 0 16 16">
@@ -325,11 +325,9 @@
                       <input type="submit" value="Add Task" class="btn">
                   </form>
               </div>
-
-
           </div>
-          <div class="card-action">
-            <h4 id="task-title">Your existing tasks</h4>
+          <div id = "existing-tasks" class="card-action">
+              <h4 id="task-title">Your existing tasks </h4>
             <ul class="collection">
                 <li class="collection-item", id="hidden-example" hidden>
                 You cannot see me :)
@@ -340,11 +338,13 @@
                 </a>
               </li>
             </ul>
-            <a class="clear-tasks btn" href="#">Clear Tasks</a>
+            <a id = "clear-tasks" class="clear-tasks btn" href="#">Clear Tasks</a>
           </div>
         </div>
       </div>
     </div>
   </div>
     </div>
+    <script src="../static/tasks.js"></script>
+    <script src="https://kit.fontawesome.com/91acc28823.js" crossorigin="anonymous"></script>
 {% endblock %}

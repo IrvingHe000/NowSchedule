@@ -39,7 +39,6 @@
             box-sizing: border-box;
             margin:0;
             padding:0;
-            background-color: do;
         }
 
         .timetable td {
@@ -65,17 +64,14 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
       <div class="container-fluid">
-        <a class="navbar-brand" href="{{ url_for('auth.main') }}">NUSchedule</a>
-{#        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">#}
-{#          <span class="navbar-toggler-icon"></span>#}
-{#        </button>#}
+        <a class="navbar-brand" href="{{ url_for('auth.main') }}" style="font-family: 'Open Sans', sans-serif;">NUSchedule</a>
         <div class="collapse navbar-collapse" id="navbarText">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
+              <a class="nav-link active" aria-current="page" href="{{ url_for('auth.main') }}">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Other functions go here</a>
+              <a class="nav-link active" href="{{ url_for('auth.team') }}">Team</a>
             </li>
           </ul>
 
@@ -83,7 +79,7 @@
         </div>
       </div>
     </nav>
-    <main class="flex-shrink-0">
+    <main class="flex-shrink-0" style="background-image: url(../../static/img/main-background.jpg); background-size: 100%">
     {% block content %}{% endblock %}
     </main>
 
@@ -100,5 +96,6 @@
     </script>
     <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-    <script src="../static/tasks.js"></script>
+
+
 </body>
