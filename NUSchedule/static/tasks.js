@@ -1,9 +1,14 @@
 var events = new Map();
 var num = 0;
 
+const titles = document.getElementsByClassName("tasks-title");
+const numInEachGroup = [0, 0, 0];
+
 document.getElementById("clear-tasks").addEventListener('click', clearAll);
 
-const colors = ["rgb(181, 196, 177)", "rgb(224,229,223)", "rgb(122, 114, 129)", "rgb(150, 84, 84)", "rgb(134, 150, 167)"];
+const colors = ["rgb(238, 229, 248)", "rgb(181, 196, 177)", "rgb(224,229,223)",
+    "rgb(122, 114, 129)", "rgb(150, 84, 84)", "rgb(134, 150, 167)",
+    "rgb(234, 208, 209)", "rgb(191, 191, 191)", "rgb(107, 81, 82)"];
 
 const today = new Date();
 let deleteIcons = document.querySelectorAll('.delete-item');
@@ -74,13 +79,11 @@ function isSameWeek(timeStampA, timeStampB) {
 
 
 function periodAddToTimetable(date, start, end, inputTask) {
-    console.log(start);
-    console.log(end);
     var starthour = start.substr(0, 2);
     var startmin = start.substr(3, 2);
     var endhour = end.substr(0, 2);
     var endmin = end.substr(3, 2);
-    var color = colors[Math.floor(Math.random()*6)]
+    var color = colors[Math.floor(Math.random()*9)]
     if (starthour < 6 && endhour > 6) {
         starthour = 6;
         startmin = 0;
@@ -125,8 +128,8 @@ function insertNewTaskPeriod(e) {
     const inputTask = document.getElementById('task-period').value;
     const inputDate = document.getElementById('date-period').value;
     const date = new Date(inputDate);
-    var grid = null;
-
+    let grid = null;
+    const classify = compareDate(date, today);
     if (isSameWeek(date, today)) {
         grid = periodAddToTimetable(date, inputStartTime, inputEndTime, inputTask);
     }
@@ -147,7 +150,15 @@ function insertNewTaskPeriod(e) {
     item.appendChild(link);
     item.setAttribute('id', num);
     num++;
-    tasks.appendChild(item);
+
+    if (classify === -1) {
+        tasks.insertBefore(item, titles[1]);
+    } else if (classify === 0) {
+        tasks.insertBefore(item, titles[2]);
+    } else {
+        tasks.appendChild(item);
+    }
+
     selectTaskType.style.display = 'block';
     periodType.style.display = 'none';
     if (grid !== null) {
@@ -163,6 +174,12 @@ function insertNewTaskDdl(e) {
     const ddl = document.getElementById('ddl').value;
     const date = new Date(inputDate);
     var grid = null;
+    const classify = compareDate(date, today);
+
+    console.log(date)
+    console.log(today)
+    console.log(ddl)
+    console.log(inputTask)
 
     if (isSameWeek(date, today)) {
          grid = ddlAddToTimetable(date, ddl, inputTask);
@@ -182,8 +199,16 @@ function insertNewTaskDdl(e) {
     item.appendChild(text);
     item.appendChild(link);
     item.setAttribute('id', num);
+    item.style.color = "red";
     num++;
-    tasks.appendChild(item);
+    if (classify === -1) {
+        tasks.insertBefore(item, titles[1]);
+    } else if (classify === 0) {
+        tasks.insertBefore(item, titles[2]);
+    } else {
+        tasks.appendChild(item);
+    }
+
     deadlineType.style.display = 'none';
     if (grid !== null) {
         events.set(item, grid);
@@ -208,7 +233,9 @@ function clear(e) {
     }
     console.log(item);
     const grid = events.get(item);
-    grid.remove();
+    if (grid !== undefined) {
+        grid.remove();
+    }
     item.remove();
     events.delete(item);
     initilize();
@@ -218,32 +245,87 @@ function clear(e) {
 function clearAll(e) {
     const tasks = document.querySelector('.collection').children;
     const length = tasks.length
-    for (let i = 0; i < length; i++) {
-        if (events.get(tasks[0])) {
-            events.get(tasks[0]).remove();
+    for (let i = 0, j = 0; i < length; i++) {
+        console.log(tasks[j].getAttribute('class'))
+        if (tasks[j].getAttribute('class') !== "collection-item tasks-title") {
+            if (events.get(tasks[j])) {
+                events.get(tasks[j]).remove();
+            }
+            tasks[j].remove();
+        } else {
+            j++;
         }
-        tasks[0].remove();
+
     }
     num = 0;
     events = new Map();
     initilize();
+    console.log(titles)
 }
 
-// Adding Today's date
+// Adding Today's date on navbar
 function setDate() {
     const date = new Date();
     const navbarDate = document.querySelector('#navbar-date');
     navbarDate.textContent = date.toDateString();
 }
 
-const viewTasks = document.getElementById('show-existing-tasks');
 
-viewTasks.addEventListener('click', showTasks);
-
-function showTasks(e) {
-    e.preventDefault();
-    viewTasks.style.display = "none";
-    document.getElementById("existing-tasks").style.display = "block";
+function compareDate(date, today) {
+    if (date.getFullYear() > today.getFullYear()) {
+        return 1;
+    } else if (date.getFullYear() < today.getFullYear()) {
+        return -1;
+    } else {
+        if (date.getMonth() > today.getMonth()) {
+            return 1;
+        } else if (date.getMonth() < today.getMonth()) {
+            return -1;
+        } else {
+            if (date.getDate() > today.getDate()) {
+                return 1;
+            } else if (date.getDate() < today.getDate()) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+    }
 }
 
 setDate();
+
+
+for (let i = 0; i < 3; i++) {
+    titles[i].firstElementChild.addEventListener('click', hideTasks);
+}
+
+
+function hideTasks(e) {
+    e.preventDefault();
+    let title = e.target;
+    while(title.tagName !== "LI") {
+        title = title.parentElement;
+    }
+    let cur = title;
+    while(cur.nextElementSibling !== null && cur.nextElementSibling.getAttribute('class')
+    !== "collection-item tasks-title") {
+        console.log(cur);
+        cur = cur.nextElementSibling;
+        if (cur.style.display === 'none') {
+            cur.style.display = 'block';
+        } else {
+            cur.style.display = 'none';
+        }
+    }
+}
+
+//Showing current time on timetable
+function addCurrentTime(date, ddl, inputTask) {
+    var grid = periodAddToTimetable(date, ddl, ddl, inputTask);
+    grid.childNodes[1].style.borderStyle = "dashed none none none";
+    grid.childNodes[1].style.borderColor = "blue";
+    return grid;
+}
+
+addCurrentTime(today, today.getHours() + ":" + today.getMinutes(), "Current Time");
