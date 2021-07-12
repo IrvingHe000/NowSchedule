@@ -68,7 +68,7 @@
         <div class="collapse navbar-collapse" id="navbarText">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{{ url_for('auth.main') }}">Home</a>
+              <a class="nav-link active" aria-current="page" href="{{ url_for('auth.main') }}">Individual</a>
             </li>
             <li class="nav-item">
               <a class="nav-link active" href="{{ url_for('auth.team') }}">Team</a>
@@ -79,7 +79,9 @@
         </div>
       </div>
     </nav>
-    <main class="flex-shrink-0" style="background-image: url(../../static/img/main-background.jpg); background-size: 100%">
+{#    <main class="flex-shrink-0" style="background-image: url(../../static/img/main-background.jpg); background-size: 100%">#}
+    <main class="flex-shrink-0" style="background-image: url(https://source.unsplash.com/random/1792x1040)
+; background-size: 100%">
     {% block content %}{% endblock %}
     </main>
 
