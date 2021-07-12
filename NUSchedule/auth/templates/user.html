@@ -12,8 +12,363 @@
 {% endblock %}
 
 {% block content %}
+    <div class = "container card" id="timetable-container" style="display: inline-block; width: 70%; border:2px solid black;
+            border-radius: 5px; height: 830px; overflow: auto; margin:40px 45px; opacity: 90%;">
+        <div style="text-align: center;margin-top: 20px;margin-bottom: 10px">
+            <span>
+                <h2 style="display:inline-block;padding-right: 20px">Timetable</h2>
+                <svg style="padding-bottom: 14px" xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-calendar-range" viewBox="0 0 16 16">
+                    <path d="M9 7a1 1 0 0 1 1-1h5v2h-5a1 1 0 0 1-1-1zM1 9h4a1 1 0 0 1 0 2H1V9z"/>
+                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                </svg>
+            </span>
+        </div>
 
-<h1>
-        This is the {{ userName }} page
-</h1>
+        <div id="timetable">
+            <div class="table-responsive", style="width: 100%">
+                <table class="timetable table table-striped ">
+                    <thead>
+                    <tr class="text-center">
+                        <th scope="col"></th>
+                        <th scope="col">MON</th>
+                        <th scope="col">TUE</th>
+                        <th scope="col">WED</th>
+                        <th scope="col">THU</th>
+                        <th scope="col">FRI</th>
+                        <th scope="col">SAT</th>
+                        <th scope="col">SUN</th>
+                    </tr>
+                    </thead>
+                    <tbody id="timetable-mainBody">
+                    <tr>
+                        <th scope="row">06:00 Am</th>
+                        <td>
+                            <div style="position:relative; width:152px; display: none; top : 0px; border: none;
+                                    margin: 0px; padding: 0px;"
+                                 id = "example-block">
+                                <button style="background-color: rgb(181, 196, 177);width:100%;
+                                        text-align:center;">
+                                </button>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">07:00 Am</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">08:00 Am</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">09:00 Am</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">10:00 Am</th>
+                        <td></td>
+                        <td class="timetable-workout">
+                        </td>
+                        <td></td>
+                        <td class="timetable-workout">
+                        </td>
+                        <td class="timetable-workout">
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">11:00 Am</th>
+                        <td></td>
+                        <td>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">12:00 Am</th>
+                        <td>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">01:00 Pm</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">02:00 Pm</th>
+                        <td>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">03:00 Pm</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">04:00 Pm</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">05:00 Pm</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">06:00 Pm</th>
+                        <td></td>
+                        <td class="timetable-workout">
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">07:00 Pm</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">08:00 Pm</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">09:00 Pm</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">10:00 Pm</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">11:00 Pm</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">12:00 Am</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class = "card" style="width: 20%; height: 830px; float: right; border:2px solid black; border-radius: 5px;
+    overflow: auto; margin-top:40px; margin-right: 45px; overflow: auto; opacity: 90%">
+        <div style="text-align: center;margin-top: 20px;margin-bottom: 10px">
+                <h2 style="display: inline-block; margin-bottom: 0px; margin-right:20px">Tasks List</h2>
+                <svg style="margin-bottom: 14px" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-calendar-check-fill" viewBox="0 0 16 16">
+                    <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zM16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zm-5.146-5.146-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708.708z"/>
+                </svg>
+        </div>
+    <div class="container">
+    <div class="row">
+      <div class="col s13">
+        <div id="main">
+          <div class="card-content">
+              <h4>Adding new tasks here:)</h4>
+
+{#              This part is for selecting type of task#}
+              <div id = "select-your-type" style="background-color: whitesmoke;">
+                  <h6 style="padding: 15px">
+                      Choose the type of your task
+                  </h6>
+                  <form id="select-type-form" style="padding:10px 15px">
+                          <input type="radio" id="period" name="task-type" value="period">
+                          <label for="period">Period</label><br>
+                          <input type="radio" id="deadline" name="task-type" value="deadline">
+                          <label for="deadline">Deadline</label><br>
+                      <br>
+                      <input type="submit" value="Choose" class="btn">
+                  </form>
+              </div>
+
+
+{#              This part is for type period#}
+              <div id = "period-type" style="background-color: whitesmoke;display:none">
+                  <form id="task-form-period" style="padding:10px;">
+                      <div class="input-field col s12">
+                            <input type="text" name="task-period" id="task-period">
+                            <label for="task">New Task</label>
+                          <div class="input-field col s12">
+                              <p>Date:</p>
+                              <input type="date" name="date-period" id="date-period">
+                          </div>
+                          <div class="input-field col s12">
+                              <p>Start time:</p>
+                              <input type="time" name="start-period" id="start-period">
+                          </div>
+                          <div class="input-field col s12">
+                              <p>End time:</p>
+                            <input type="time" name="end-period" id="end-period">
+                          </div>
+                      </div>
+                      <input type="submit" value="Add Task" class="btn">
+                  </form>
+              </div>
+
+{#              This is part for deadline option#}
+              <div id = "deadline-type" style="background-color: whitesmoke; display:none">
+                  <form id="task-form-ddl" style="padding:10px">
+                      <div class="input-field col s12">
+                          <input type="text" name="task-ddl" id="task-ddl">
+                          <label for="task-ddl">New Task</label>
+                      </div>
+                      <div class="input-field col s12">
+                          <p>Date:</p>
+                          <input type="date" name="date-ddl" id="date-ddl">
+                      </div>
+                      <div class="input-field col s12">
+                          <p>Deadline:</p>
+                          <input type="time" name="ddl" id="ddl">
+                      </div>
+                      <input type="submit" value="Add Task" class="btn">
+                  </form>
+              </div>
+          </div>
+          <div id = "existing-tasks" class="card-action">
+              <h4 id="task-title">Your existing tasks </h4>
+            <ul class="collection">
+                <li class="collection-item", id="hidden-example" hidden>
+                You cannot see me :)
+                <a href="#" class="delete-item secondary-content">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-backspace-fill" viewBox="0 0 16 16">
+                    <path d="M15.683 3a2 2 0 0 0-2-2h-7.08a2 2 0 0 0-1.519.698L.241 7.35a1 1 0 0 0 0 1.302l4.843 5.65A2 2 0 0 0 6.603 15h7.08a2 2 0 0 0 2-2V3zM5.829 5.854a.5.5 0 1 1 .707-.708l2.147 2.147 2.146-2.147a.5.5 0 1 1 .707.708L9.39 8l2.146 2.146a.5.5 0 0 1-.707.708L8.683 8.707l-2.147 2.147a.5.5 0 0 1-.707-.708L7.976 8 5.829 5.854z"></path>
+                  </svg>
+                </a>
+              </li>
+                <li class="collection-item", id="completed-tasks" style="background-color: cornflowerblue; color:white; font-weight: bold">
+                    Completed Tasks
+                    <a href="#">
+                    <svg style="float: right"id="Outline" xmlns="http://www.w3.org/2000/svg" width=24px height=24px viewBox="0 0 24 24">
+                        <title>03 align right</title>
+                        <path d="M1,6H23a1,1,0,0,0,0-2H1A1,1,0,0,0,1,6Z"/><path d="M23,9H9a1,1,0,0,0,0,2H23a1,1,0,0,0,0-2Z"/><path d="M23,19H9a1,1,0,0,0,0,2H23a1,1,0,0,0,0-2Z"/><path d="M23,14H1a1,1,0,0,0,0,2H23a1,1,0,0,0,0-2Z"/></svg>
+                    </a>
+                </li>
+                <li class="collection-item", id="today-tasks" style="background-color: darkorange; color:white; font-weight: bold">
+                    Today's Tasks
+                    <a href="#">
+                    <svg style="float: right"id="Outline" xmlns="http://www.w3.org/2000/svg" width=24px height=24px viewBox="0 0 24 24">
+                        <title>03 align right</title>
+                        <path d="M1,6H23a1,1,0,0,0,0-2H1A1,1,0,0,0,1,6Z"/><path d="M23,9H9a1,1,0,0,0,0,2H23a1,1,0,0,0,0-2Z"/><path d="M23,19H9a1,1,0,0,0,0,2H23a1,1,0,0,0,0-2Z"/><path d="M23,14H1a1,1,0,0,0,0,2H23a1,1,0,0,0,0-2Z"/></svg>
+                    </a>
+                </li>
+                <li class="collection-item", id="future-tasks" style="background-color: darkseagreen; color:white; font-weight: bold;">
+                    Future's Tasks
+                    <a href="#">
+                    <svg style="float: right"id="Outline" xmlns="http://www.w3.org/2000/svg" width=24px height=24px viewBox="0 0 24 24">
+                        <title>03 align right</title>
+                        <path d="M1,6H23a1,1,0,0,0,0-2H1A1,1,0,0,0,1,6Z"/><path d="M23,9H9a1,1,0,0,0,0,2H23a1,1,0,0,0,0-2Z"/><path d="M23,19H9a1,1,0,0,0,0,2H23a1,1,0,0,0,0-2Z"/><path d="M23,14H1a1,1,0,0,0,0,2H23a1,1,0,0,0,0-2Z"/></svg>
+                    </a>
+                </li>
+
+            </ul>
+            <a id = "clear-tasks" class="clear-tasks btn" href="#">Clear Tasks</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    </div>
+    <a href="https://icons8.com/icon/KJa1vG6vZTIQ/eye">Eye icon by Icons8</a>
+    <script src="../static/tasks.js"></script>
+    <script src="https://kit.fontawesome.com/91acc28823.js" crossorigin="anonymous"></script>
 {% endblock %}

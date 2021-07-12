@@ -51,8 +51,9 @@ def signup():
         error = signUp_validation()
         if error is None:
             return redirect(url_for('auth.login'))
-
-        flash(error)
+        else:
+            flash(error)
+            return render_template('signup.html')
     return render_template('signup.html')
 
 
@@ -64,7 +65,6 @@ def signUp_validation():
         username = request.form.get('username')
         password = request.form.get('password')
         confirmPassword = request.form.get('confirmPassword')
-
 
         privilege = 'user'
 
@@ -92,14 +92,29 @@ def logout():
 
 @auth.route("/login", methods=['GET', 'POST'])
 def login():
-    if current_user.is_authenticated:
-        return redirect('/')
+    # if current_user.is_authenticated:
+    #     return redirect('/')
 
-    if request.method == 'POST':
-        error = login_validation()
+    form = loginForm()
+    error = None
+    username = None
+
+    if form.validate_on_submit():
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        user = Users.query.filter_by(username=username).first()
+
+        if user and user.check_password(password):
+            error = None
+        else:
+            error = 'Username or password do not match. Please try again.'
+
         if error is None:
-            return redirect(url_for('auth.main'))
-        flash(error)
+            return redirect('/{}'.format(username))
+        else:
+            flash(error)
+            return render_template('login.html')
     else:
         return render_template('login.html')
 
@@ -112,6 +127,7 @@ def main():
 @auth.route('/<userName>')
 def userPage(userName):
     return render_template('user.html', userName=userName)
+
 
 @auth.route('/team')
 def team():
