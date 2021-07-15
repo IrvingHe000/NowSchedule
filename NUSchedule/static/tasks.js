@@ -20,28 +20,41 @@ const tasks = document.querySelector('.collection');
 const svgIcon = document.querySelector('#hidden-example svg');
 
 const selectTaskType = document.getElementById("select-your-type");
-const periodType = document.getElementById("period-type");
-const deadlineType = document.getElementById("deadline-type");
+const periodTypeForm = document.getElementById("period-type");
+const deadlineTypeForm = document.getElementById("deadline-type");
+let realForm = document.getElementById("real-form");
 const chooseTypeForm = document.getElementById("select-type-form");
 
 chooseTypeForm.addEventListener('submit', chooseType);
 
+
 function chooseType(e) {
     e.preventDefault();
-    periodType.style.display = 'none';
-    deadlineType.style.display = 'none';
+    realForm.style.display = 'none';
     const types = document.getElementsByName('task-type');
 
+
     if (types[0].checked) {
-        periodType.style.display = 'block';
+        let tempNode = periodTypeForm.cloneNode(true);
+        tempNode.style.display = "block";
+        tempNode.id = "real-form";
+        realForm.replaceWith(tempNode);
+
+        realForm = tempNode;
+        realForm.addEventListener('submit', insertNewTaskPeriod);
+        console.log(realForm);
+        console.log(tempNode)
     } else if (types[1].checked) {
-        deadlineType.style.display = 'block';
+        let tempNode = deadlineTypeForm.cloneNode(true);
+        tempNode.style.display = "block";
+        tempNode.id = "real-form";
+        realForm.replaceWith(tempNode);
+        realForm = tempNode;
+        realForm.addEventListener('submit', insertNewTaskDdl);
     } else {
 
     }
 }
-
-
 
 formPeriod.addEventListener('submit', insertNewTaskPeriod);
 formDdl.addEventListener('submit', insertNewTaskDdl);
@@ -79,11 +92,11 @@ function isSameWeek(timeStampA, timeStampB) {
 
 
 function periodAddToTimetable(date, start, end, inputTask) {
-    var starthour = start.substr(0, 2);
-    var startmin = start.substr(3, 2);
-    var endhour = end.substr(0, 2);
-    var endmin = end.substr(3, 2);
-    var color = colors[Math.floor(Math.random()*9)]
+    let starthour = start.substr(0, 2);
+    let startmin = start.substr(3, 2);
+    let endhour = end.substr(0, 2);
+    let endmin = end.substr(3, 2);
+    let color = colors[Math.floor(Math.random()*9)]
     if (starthour < 6 && endhour > 6) {
         starthour = 6;
         startmin = 0;
@@ -123,6 +136,7 @@ function periodAddToTimetable(date, start, end, inputTask) {
 
 function insertNewTaskPeriod(e) {
     e.preventDefault();
+    console.log(realForm);
     const inputStartTime = document.getElementById('start-period').value;
     const inputEndTime = document.getElementById('end-period').value;
     const inputTask = document.getElementById('task-period').value;
@@ -135,7 +149,7 @@ function insertNewTaskPeriod(e) {
     }
 
     if (inputTask.value === "") {
-        periodType.style.display = 'none';
+        realForm.style.display = 'none';
         return;
     }
     const item = document.createElement("li");
@@ -160,7 +174,7 @@ function insertNewTaskPeriod(e) {
     }
 
     selectTaskType.style.display = 'block';
-    periodType.style.display = 'none';
+    realForm.style.display = 'none';
     if (grid !== null) {
         events.set(item, grid);
     }
@@ -185,7 +199,7 @@ function insertNewTaskDdl(e) {
          grid = ddlAddToTimetable(date, ddl, inputTask);
     }
     if (inputTask === "") {
-        deadlineType.style.display = 'none';
+        realForm.style.display = 'none';
         return;
     }
     const item = document.createElement("li");
@@ -209,7 +223,7 @@ function insertNewTaskDdl(e) {
         tasks.appendChild(item);
     }
 
-    deadlineType.style.display = 'none';
+    realForm.style.display = 'none';
     if (grid !== null) {
         events.set(item, grid);
     }
@@ -223,6 +237,7 @@ function ddlAddToTimetable(date, ddl, inputTask) {
 }
 
 function clear(e) {
+    e.preventDefault();
     let item;
     if (e.target.tagName === 'path') {
         item = e.target.parentElement.parentElement.parentElement;
@@ -243,6 +258,7 @@ function clear(e) {
 
 
 function clearAll(e) {
+    e.preventDefault();
     const tasks = document.querySelector('.collection').children;
     const length = tasks.length
     for (let i = 0, j = 0; i < length; i++) {
@@ -293,7 +309,7 @@ function compareDate(date, today) {
     }
 }
 
-setDate();
+// setDate();
 
 
 for (let i = 0; i < 3; i++) {

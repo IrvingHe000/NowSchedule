@@ -265,7 +265,7 @@
     <div class="row">
       <div class="col s13">
         <div id="main">
-          <div class="card-content">
+          <div id = "inputs" class="card-content">
               <h4>Adding new tasks here:)</h4>
 
 {#              This part is for selecting type of task#}
@@ -283,25 +283,47 @@
                   </form>
               </div>
 
+              <div id = "real-form" style="display: none">
+                  <form id="task-form-period" style="padding:10px;">
+                      <div class="input-field col s12">
+                          <input type="text" name="task-period" id="task-period">
+                          <label for="task">New Task</label>
+                      </div>
+                      <div class="input-field col s12">
+                          <p>Date:</p>
+                          <input type="date" name="date-period" id="date-period">
+                      </div>
+                      <div class="input-field col s12">
+                          <p>Start time:</p>
+                          <input type="time" name="start-period" id="start-period">
+                      </div>
+                      <div class="input-field col s12">
+                          <p>End time:</p>
+                          <input type="time" name="end-period" id="end-period">
+                      </div>
+                      <input type="submit" value="Add Task" class="btn">
+                  </form>
+              </div>
+
 
 {#              This part is for type period#}
               <div id = "period-type" style="background-color: whitesmoke;display:none">
                   <form id="task-form-period" style="padding:10px;">
                       <div class="input-field col s12">
-                            <input type="text" name="task-period" id="task-period">
-                            <label for="task">New Task</label>
-                          <div class="input-field col s12">
-                              <p>Date:</p>
-                              <input type="date" name="date-period" id="date-period">
-                          </div>
-                          <div class="input-field col s12">
-                              <p>Start time:</p>
-                              <input type="time" name="start-period" id="start-period">
-                          </div>
-                          <div class="input-field col s12">
-                              <p>End time:</p>
-                            <input type="time" name="end-period" id="end-period">
-                          </div>
+                          <input type="text" name="task-period" id="task-period">
+                          <label for="task">New Task</label>
+                      </div>
+                      <div class="input-field col s12">
+                          <p>Date:</p>
+                          <input type="date" name="date-period" id="date-period">
+                      </div>
+                      <div class="input-field col s12">
+                          <p>Start time:</p>
+                          <input type="time" name="start-period" id="start-period">
+                      </div>
+                      <div class="input-field col s12">
+                          <p>End time:</p>
+                          <input type="time" name="end-period" id="end-period">
                       </div>
                       <input type="submit" value="Add Task" class="btn">
                   </form>
@@ -326,6 +348,8 @@
                   </form>
               </div>
           </div>
+
+
           <div id = "existing-tasks" class="card-action">
               <h4 id="task-title">Your existing tasks </h4>
             <ul class="collection" id = "tasks-list">
