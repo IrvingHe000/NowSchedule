@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block contents %}
+
+<body class="text-center">
+        <br>
+        <br>
+        <br>
+        <h1 class="h3 mb-3 fw-normal" style="font-size: 50px;">forgot password</h1>
+
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                    {{ error }}
+            </div>
+        {% else %}
+            <div class="alert alert-primary" role="alert">
+                An email has been sent to you. Please check your mailbox.
+            </div>
+        {% endif %}
+
+        <form method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <div class="row g-3">
+                <div class="col-auto">
+                    <input type="text" class="form-control" id="verificationCode"
+                           placeholder="verification code" name="verificationCode">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary mb-3">submit</button>
+                </div>
+            </div>
+        </form>
+
+</body>
+
+{% endblock %}

@@ -1,3 +1,5 @@
+import uuid
+
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
@@ -6,11 +8,11 @@ from flask_login import (
     current_user, LoginManager, login_required, login_user, logout_user
 )
 
-from .loginForm import loginForm
-
-from .signUpForm import signUpForm
+from .forms import loginForm, signUpForm, resetPasswordForm
 
 from .models import Users
+
+from .verificationCode import generate_verificationCode, send_verificationCode
 
 from .. import database
 
@@ -20,8 +22,8 @@ auth = Blueprint('auth', __name__, template_folder='templates')
 
 
 @loginManager.user_loader
-def load_user(userId):
-    return Users.query.filter_by(userId=userId).first()
+def load_user(id):
+    return Users.query.filter_by(id=id).first()
 
 
 @loginManager.unauthorized_handler
@@ -39,22 +41,25 @@ def login_validation():
         user = Users.query.filter_by(username=username).first()
 
         if user and user.check_password(password):
-            # login_user(user)
+            login_user(user)
             return None
 
-    return 'Username or password do not match. Please try again.'
+    return 'Username and password do not match. Please try again.'
 
 
-@auth.route('/signup', methods=['POST', 'GET'])
-def signup():
+@auth.route("/login", methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect('/')
+
     if request.method == 'POST':
-        error = signUp_validation()
+        error = login_validation()
         if error is None:
-            return redirect(url_for('auth.login'))
+            return redirect('/')
         else:
-            flash(error)
-            return render_template('signup.html')
-    return render_template('signup.html')
+            return render_template('login.html', error=error)
+    else:
+        return render_template('login.html')
 
 
 def signUp_validation():
@@ -64,7 +69,6 @@ def signUp_validation():
         email = request.form.get('email')
         username = request.form.get('username')
         password = request.form.get('password')
-        confirmPassword = request.form.get('confirmPassword')
 
         privilege = 'user'
 
@@ -76,11 +80,23 @@ def signUp_validation():
         database.session.add(user)
         database.session.commit()
 
-        # login_user(user)
+        login_user(user)
 
         return None
 
     return 'Password and confirm password do not match. Please try again.'
+
+
+@auth.route('/signup', methods=['POST', 'GET'])
+def signup():
+    if request.method == 'POST':
+        error = signUp_validation()
+        if error is None:
+            return redirect('/')
+        else:
+            return render_template('signup.html', error=error)
+    else:
+        return render_template('signup.html')
 
 
 @auth.route('/logout')
@@ -90,45 +106,59 @@ def logout():
     return redirect('/')
 
 
-@auth.route("/login", methods=['GET', 'POST'])
-def login():
-    # if current_user.is_authenticated:
-    #     return redirect('/')
-
-    form = loginForm()
-    error = None
-    username = None
-
-    if form.validate_on_submit():
+@auth.route('/forgotPassword', methods=['POST', 'GET'])
+def forgotPassword():
+    if request.method == 'POST':
         username = request.form.get('username')
-        password = request.form.get('password')
-
         user = Users.query.filter_by(username=username).first()
-
-        if user and user.check_password(password):
-            error = None
+        if user is not None:
+            print("forgotPassword  user = ", user)
+            # generate_verificationCode(user)
+            send_verificationCode(user)
+            return redirect(url_for('auth.checkVerificationCode', userId=user.id))
         else:
-            error = 'Username or password do not match. Please try again.'
-
-        if error is None:
-            return redirect('/{}'.format(username))
-        else:
-            flash(error)
-            return render_template('login.html')
+            error = "Cannot find this user. Please check the username."
+            return render_template('forgotPassword.html', error=error)
     else:
-        return render_template('login.html')
+        return render_template('forgotPassword.html')
 
 
-@auth.route('/')
-def main():
-    return render_template('main.html')
+@auth.route('/checkVerificationCode/<int:userId>', methods=['POST', 'GET'])
+def checkVerificationCode(userId):
+    if request.method == 'POST':
+        verificationCode = request.form.get('verificationCode')
+        user = Users.query.filter_by(id=userId).first()
+        # print("checkVerificationCode  user = ", user)
+        if user.check_verificationCode(verificationCode):
+            # print("checkVerificationCode == True")
+            return redirect(url_for('auth.resetPassword', userId=user.id))
+        else:
+            # print("checkVerificationCode == False")
+            error = "Verification code is incorrect. Please try again."
+            return render_template("checkVerificationCode.html", error=error)
+    else:
+        return render_template("checkVerificationCode.html")
 
 
-@auth.route('/<userName>')
-def userPage(userName):
-    return render_template('user.html', userName=userName)
+def resetPasswordValidate(user):
+    form = resetPasswordForm()
+    if form.validate_on_submit():
+        password = request.form.get('password')
+        user.set_password(password)
+        login_user(user)
+        return None
+    else:
+        return "Password and confirm password does not match. Please try again."
 
 
-@auth.route('/team')
-def team():
-    return render_template('team.html')
+@auth.route('/resetPassword/<int:userId>', methods=['POST', 'GET'])
+def resetPassword(userId):
+    if request.method == 'POST':
+        user = Users.query.filter_by(id=userId).first()
+        error = resetPasswordValidate(user)
+        if error is not None:
+            return render_template("resetPassword.html", error=error)
+        else:
+            return redirect('/')
+    else:
+        return render_template("resetPassword.html")

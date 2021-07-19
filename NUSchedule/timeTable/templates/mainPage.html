@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block contents %}
+<style>
+    .container {
+        justify-content: center;
+    }
+</style>
+<div style="text-align: -moz-left;">
+    <p>
+        NUSchedule provides a graphical timetable, showing the timeTableOperation of the week,
+        using colored boxes to present an event.
+    </p>
+    <P>
+        You can create different types of events, write notes for them,
+        and invite your teammates to join your group project.
+    </P>
+    <br />
+    <p>
+        Don’t have an account yet? <a href = '/signup'>Click here to join us!</a>
+    </p>
+    <p>
+        Already have an account? <a href = '/login'>Schedule your university life Now!</a>
+    </p>
+
+</div>
+{% endblock %}

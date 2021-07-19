@@ -8,11 +8,12 @@ from .. import database
 class Users(UserMixin, database.Model):
     __tablename__ = 'Users'
 
-    userId = database.Column(database.Integer, autoincrement=True, primary_key=True)
+    id = database.Column(database.Integer, autoincrement=True, primary_key=True)
     email = database.Column(database.String(20), nullable=False)
     username = database.Column(database.String(20), unique=True, nullable=False)
     password = database.Column(database.String(20), nullable=False)
     privilege = database.Column(database.String(20), nullable=False)
+    verificationCode = database.Column(database.String(6), nullable=True)
 
     def __init__(self, email, username, password, privilege):
         self.email = email
@@ -28,3 +29,9 @@ class Users(UserMixin, database.Model):
 
     def check_privilege(self):
         return self.privilege
+
+    def set_verificationCode(self, verificationCode):
+        self.verificationCode = generate_password_hash(verificationCode)
+
+    def check_verificationCode(self, verificationCode):
+        return check_password_hash(self.verificationCode, verificationCode)

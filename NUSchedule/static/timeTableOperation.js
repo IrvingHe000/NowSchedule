@@ -33,24 +33,29 @@ function chooseType(e) {
     realForm.style.display = 'none';
     const types = document.getElementsByName('task-type');
 
-
+    console.log(realForm);
     if (types[0].checked) {
         let tempNode = periodTypeForm.cloneNode(true);
         tempNode.style.display = "block";
         tempNode.id = "real-form";
         realForm.replaceWith(tempNode);
-
         realForm = tempNode;
+        const form = realForm.children[0];
+        form.setAttribute('name', 'real-form');
+        form.setAttribute('method', 'POST');
         realForm.addEventListener('submit', insertNewTaskPeriod);
         console.log(realForm);
-        console.log(tempNode)
     } else if (types[1].checked) {
         let tempNode = deadlineTypeForm.cloneNode(true);
         tempNode.style.display = "block";
         tempNode.id = "real-form";
         realForm.replaceWith(tempNode);
         realForm = tempNode;
+        const form = realForm.children[0];
+        form.setAttribute('name', 'real-form');
+        form.setAttribute('method', 'POST');
         realForm.addEventListener('submit', insertNewTaskDdl);
+        console.log(realForm);
     } else {
 
     }
