@@ -7,7 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
     crossorigin="anonymous">
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sticky-footer/">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -66,10 +66,39 @@
             padding:0px;
         }
 
+        * {
+            margin : 0px;
+            padding: 0px;
+        }
+        .warning-li {
+            padding-top: 15px;
+            text-align: center;
+        }
+
+        .message {
+            color: white;
+        }
+        #warnings {
+            height: 50px;
+            margin: 0px;
+            padding: 0px;
+            background-color: coral;
+        }
+
     </style>
 </head>
 <body>
-
+        {% with messages = get_flashed_messages() %}
+      {% if messages %}
+            <div id = "warnings">
+                <ul class=flashes>
+                {% for message in messages %}
+                  <li class="warning-li"><p class = "message">{{ message }}<p></li>
+                {% endfor %}
+                </ul>
+            </div>
+      {% endif %}
+    {% endwith %}
     <nav class="navbar navbar-expand-lg navbar navbar-light bg-light">
       <div class="container-fluid">
           <a class="navbar-brand" href="{{ url_for('timeTable.show_timeTable') }}" style="font-family: 'Open Sans', sans-serif;"><b>NUSchedule</b></a>
@@ -96,7 +125,7 @@
         </div>
       </div>
     </nav>
-    <main class="flex-shrink-0" style="background-image: url(https://source.unsplash.com/random/1792x1040)
+    <main class="flex-shrink-0" style="background-image: url(../../static/img/main-background.jpg)
 ; background-size: 100%">
     <div class = "container card" id="timetable-container" style="display: inline-block; width: 70%; border:2px solid black;
             border-radius: 5px; height: 830px; overflow: auto; margin:40px 45px; opacity: 90%;">
@@ -348,7 +377,7 @@
     <div class="container">
     <div class="row">
       <div class="col s13">
-        <div id="main">
+        <p id="main">
           <div id = "inputs" class="card-content">
               <h4>Adding new tasks here:)</h4>
 
@@ -363,72 +392,70 @@
                           <input type="radio" id="deadline" name="task-type" value="deadline">
                           <label for="deadline">Deadline</label><br>
                       <br>
-                      <input type="submit" value="Choose" class="btn">
+                      <input id = "select-type-form-button" type="button" value="Choose" class="btn">
                   </form>
               </div>
 
+
+
               <div id = "real-form" style="display: none">
-                  <form name = "real-form" id="task-form-period" style="padding:10px;">
-                      <div class="input-field col s12">
-                          <input type="text" name="task-period" id="task-period">
-                          <label for="task">New Task</label>
-                      </div>
-                      <div class="input-field col s12">
-                          <p>Date:</p>
-                          <input type="date" name="date-period" id="date-period">
-                      </div>
-                      <div class="input-field col s12">
-                          <p>Start time:</p>
-                          <input type="time" name="start-period" id="start-period">
-                      </div>
-                      <div class="input-field col s12">
-                          <p>End time:</p>
-                          <input type="time" name="end-period" id="end-period">
-                      </div>
-                      <input type="submit" value="Add Task" class="btn">
-                  </form>
+
               </div>
 
 
 {#              This part is for type period#}
               <div id = "period-type" style="background-color: whitesmoke;display:none">
-                  <form id="task-form-period" style="padding:10px;">
+                  <form id="task-form-period" style="padding:10px">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                      <div class="input-field col s12" style="display: none">
+                          <input type="text" value="period" name="eventType" id="type-period"/>
+                      </div>
                       <div class="input-field col s12">
-                          <input type="text" name="task-period" id="task-period">
-                          <label for="task">New Task</label>
+                          <input type="text" name="eventName" id="task-period"/>
+                          <label for="eventName">New Task</label>
                       </div>
                       <div class="input-field col s12">
                           <p>Date:</p>
-                          <input type="date" name="date-period" id="date-period">
+                          <input type="date" name="date" id="date-period"/>
                       </div>
                       <div class="input-field col s12">
                           <p>Start time:</p>
-                          <input type="time" name="start-period" id="start-period">
+                          <input type="time" name="startTime" id="start-period"/>
                       </div>
                       <div class="input-field col s12">
                           <p>End time:</p>
-                          <input type="time" name="end-period" id="end-period">
+                          <input type="time" name="endTime" id="end-period"/>
                       </div>
-                      <input type="submit" value="Add Task" class="btn">
+                      <input id = "period-button" type="submit" value="Add event" class="btn"
+                      name="action"/>
                   </form>
               </div>
 
 {#              This is part for deadline option#}
               <div id = "deadline-type" style="background-color: whitesmoke; display:none">
                   <form id="task-form-ddl" style="padding:10px">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                       <div class="input-field col s12">
-                          <input type="text" name="task-ddl" id="task-ddl">
-                          <label for="task-ddl">New Task</label>
+                          <input type="text" value="deadline" name="eventType" id="type-ddl" style="display: none; ">
+                      </div>
+                      <div class="input-field col s12">
+                          <input type="text" name="eventName" id="task-ddl">
+                          <label for="eventName">New Task</label>
                       </div>
                       <div class="input-field col s12">
                           <p>Date:</p>
-                          <input type="date" name="date-ddl" id="date-ddl">
+                          <input type="date" name="date" id="date-ddl">
                       </div>
                       <div class="input-field col s12">
                           <p>Deadline:</p>
-                          <input type="time" name="ddl" id="ddl">
+                          <input type="time" name="startTime" id="ddl">
                       </div>
-                      <input type="submit" value="Add Task" class="btn">
+                      <div class="input-field col s12" style="display: none;">
+                          <p>Deadline:</p>
+                          <input value="00:00" type="time" name="endTime" id="fake">
+                      </div>
+                      <input id = "ddl-button" type="submit" value="Add event" class="btn"
+                      name="action">
                   </form>
               </div>
           </div>
@@ -471,13 +498,28 @@
                 </li>
 
             </ul>
-            <a id = "clear-tasks" class="clear-tasks btn" href="#">Clear Tasks</a>
+              <form id = "clear-tasks" method="POST" action="/timeTable">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <input class="clear-tasks btn" type="submit" value="Clear all events"
+                  name="action">
+              </form>
           </div>
         </div>
       </div>
     </div>
   </div>
     </div>
+        <div id = "fake-forms">
+            <form style="display: none" method="POST"  id = "fake-forms-example" action="/timeTable" >
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input value="period" name="eventType">
+                <input name="eventName">
+                <input name="date">
+                <input name="startTime">
+                <input name="endTime">
+                <input type="submit" class="btn" name="action" value="Delete event">
+            </form>
+        </div>
 
 
 
@@ -492,5 +534,193 @@
     </footer>
 
 <script Language="JavaScript" src="../../static/timeTableOperation.js"></script>
+<script>
+        {% for eventCur in events %}
+            console.log('{{ eventCur }}')
+            if ('{{eventCur.eventType}}' === "period") {
+            console.log('{{ eventCur.startTime}}');
+            console.log('{{ eventCur.endTime}}');
+            console.log('{{ eventCur.eventName }}');
+            console.log('{{ eventCur.date }}');
+            insertNewTaskPeriod('{{ eventCur.startTime}}', '{{ eventCur.endTime}}',
+                '{{ eventCur.eventName }}', '{{ eventCur.date }}');}
+            else {
+                console.log("else")
+            insertNewTaskDdl('{{ eventCur.eventName }}', '{{ eventCur.date }}','{{eventCur.startTime}}');
+        }
+         {% endfor %}
+
+
+        function periodAddToTimetable(date, start, end, inputTask) {
+        let starthour = start.substr(0, 2);
+        let startmin = start.substr(3, 2);
+        let endhour = end.substr(0, 2);
+        let endmin = end.substr(3, 2);
+        if (starthour < '1') {
+            starthour = starthour.substr(1, 2);
+        }
+        if (endhour < '1') {
+            endhour = endhour.substr(1, 2);
+        }
+        if (startmin < '1') {
+            startmin = startmin.substr(1, 2);
+        }
+        if (endmin < '1') {
+            endmin = endmin.substr(1, 2);
+        }
+
+        let color = colors[Math.floor(Math.random()*9)]
+        if (starthour < 6 && endhour > 6) {
+            starthour = 6;
+            startmin = 0;
+        } else if (starthour > 6 && endhour < 6) {
+            endhour = 23;
+            endmin = 59;
+        } else if (starthour < 6 && endhour < 6) {
+            return ;
+        }
+
+        const example = document.querySelector('#example-block');
+        let weekday = date.getDay();
+        if (weekday === 0) {
+            weekday = 7;
+        }
+        const dayTimetable = document.querySelector('#timetable-mainBody');
+
+        let minHeight = ((60 - startmin) / 60.0 + endmin / 60.0) * 65;
+        let hourHeight = (endhour - starthour - 1) * 65;
+        let h = minHeight + hourHeight;
+        let height = h + "px";
+        let timetableRow = dayTimetable.children[starthour - 6];
+        let timetableGrid = timetableRow.children[weekday];
+        let newGrid = example.cloneNode(true);
+
+        newGrid.style.display = "block";
+        newGrid.childNodes[1].textContent = inputTask;
+        newGrid.style.height = height;
+        newGrid.style.position = 'absolute';
+        newGrid.style.top = startmin * 65.0 / 60.0 + 'px';
+        newGrid.childNodes[1].style.borderStyle = "solid none solid none";
+        newGrid.childNodes[1].style.borderRadius = "5px"
+        newGrid.childNodes[1].style.borderColor = "black";
+        newGrid.childNodes[1].style.backgroundColor = color;
+        timetableGrid.style.position = 'relative';
+        timetableGrid.appendChild(newGrid);
+
+        if (starthour === endhour && startmin === endmin) {
+            newGrid.childNodes[1].style.borderColor = "red";
+        }
+        return newGrid;
+    }
+
+    function insertNewTaskPeriod(inputStartTime, inputEndTime, inputTask, inputDate) {
+        //Create a fake form
+        const fakeForms = document.getElementById("fake-forms");
+        const fakeFormsExample = document.getElementById("fake-forms-example")
+        var newFakeForm = fakeFormsExample.cloneNode(true);
+        newFakeForm.children[1].value = "period";
+        newFakeForm.children[2].value = inputTask;
+        newFakeForm.children[3].value = inputDate;
+        newFakeForm.children[4].value = inputStartTime;
+        newFakeForm.children[5].value = inputEndTime;
+        fakeForms.appendChild(newFakeForm);
+
+
+        const date = new Date(inputDate);
+        let grid = null;
+        const classify = compareDate(date, today);
+        if (isSameWeek(date, today)) {
+            grid = periodAddToTimetable(date, inputStartTime, inputEndTime, inputTask);
+        }
+
+        if (inputTask.value === "") {
+            realForm.style.display = 'none';
+            return;
+        }
+        const item = document.createElement("li");
+        item.setAttribute('class', "collection-item");
+        const text = document.createTextNode(inputTask);
+        const link = document.createElement("a");
+        link.setAttribute("href", "#");
+        link.setAttribute("class", "delete-item secondary-content")
+        const icon = svgIcon.cloneNode(true);
+        link.appendChild(icon);
+        item.appendChild(text);
+        item.appendChild(link);
+        item.setAttribute('id', num);
+        num++;
+
+        if (classify === -1) {
+            tasks.insertBefore(item, titles[1]);
+        } else if (classify === 0) {
+            tasks.insertBefore(item, titles[2]);
+        } else {
+            tasks.appendChild(item);
+        }
+
+        selectTaskType.style.display = 'block';
+        realForm.style.display = 'none';
+        if (grid !== null) {
+            events.set(item, grid);
+        }
+        console.log(item)
+        console.log(newFakeForm)
+        fakeFormsMap.set(item, newFakeForm);
+        initilize();
+    }
+
+    function insertNewTaskDdl(inputTask, inputDate, ddl) {
+        //Set
+        const fakeForms = document.getElementById("fake-forms");
+        const fakeFormsExample = document.getElementById("fake-forms-example")
+        var newFakeForm = fakeFormsExample.cloneNode(true);
+        newFakeForm.children[1].value = "deadline";
+        newFakeForm.children[2].value = inputTask;
+        newFakeForm.children[3].value = inputDate;
+        newFakeForm.children[4].value = ddl;
+        newFakeForm.children[5].value = ddl;
+        fakeForms.appendChild(newFakeForm);
+
+        const date = new Date(inputDate);
+        var grid = null;
+        const classify = compareDate(date, today);
+
+        if (isSameWeek(date, today)) {
+             grid = periodAddToTimetable(date, ddl, ddl, inputTask);
+        }
+        if (inputTask === "") {
+            realForm.style.display = 'none';
+            return;
+        }
+        const item = document.createElement("li");
+        item.setAttribute('class', "collection-item");
+        const text = document.createTextNode(inputTask);
+        const link = document.createElement("a");
+        link.setAttribute("href", "#");
+        link.setAttribute("class", "delete-item secondary-content")
+        const icon = svgIcon.cloneNode(true);
+        link.appendChild(icon);
+        item.appendChild(text);
+        item.appendChild(link);
+        item.setAttribute('id', num);
+        item.style.color = "red";
+        num++;
+        if (classify === -1) {
+            tasks.insertBefore(item, titles[1]);
+        } else if (classify === 0) {
+            tasks.insertBefore(item, titles[2]);
+        } else {
+            tasks.appendChild(item);
+        }
+
+        realForm.style.display = 'none';
+        if (grid !== null) {
+            events.set(item, grid);
+        }
+        fakeFormsMap.set(item, newFakeForm);
+        initilize();
+    }
+
+</script>
 
 </body>

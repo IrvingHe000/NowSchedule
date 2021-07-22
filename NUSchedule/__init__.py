@@ -9,6 +9,7 @@ from flaskext.markdown import Markdown
 from flask_mail import Mail, Message
 
 
+
 database = SQLAlchemy()
 
 
@@ -19,7 +20,7 @@ def create_app():
     mail = Mail(app)
     mail.init_app(app)
 
-    csrf = CSRFProtect()
+    csrf = CSRFProtect(app)
     csrf.init_app(app)
 
     Markdown(app)

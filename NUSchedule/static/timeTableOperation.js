@@ -1,10 +1,11 @@
-var events = new Map();
-var num = 0;
+let events = new Map();
+let fakeFormsMap = new Map();
+let num = 0;
 
 const titles = document.getElementsByClassName("tasks-title");
 const numInEachGroup = [0, 0, 0];
 
-document.getElementById("clear-tasks").addEventListener('click', clearAll);
+document.getElementById("clear-tasks").addEventListener('submit', clearAll);
 
 const colors = ["rgb(238, 229, 248)", "rgb(181, 196, 177)", "rgb(224,229,223)",
     "rgb(122, 114, 129)", "rgb(150, 84, 84)", "rgb(134, 150, 167)",
@@ -23,17 +24,15 @@ const selectTaskType = document.getElementById("select-your-type");
 const periodTypeForm = document.getElementById("period-type");
 const deadlineTypeForm = document.getElementById("deadline-type");
 let realForm = document.getElementById("real-form");
-const chooseTypeForm = document.getElementById("select-type-form");
+const chooseTypeForm = document.getElementById("select-type-form-button");
 
-chooseTypeForm.addEventListener('submit', chooseType);
+chooseTypeForm.addEventListener('click', chooseType);
 
 
 function chooseType(e) {
-    e.preventDefault();
     realForm.style.display = 'none';
     const types = document.getElementsByName('task-type');
 
-    console.log(realForm);
     if (types[0].checked) {
         let tempNode = periodTypeForm.cloneNode(true);
         tempNode.style.display = "block";
@@ -43,6 +42,7 @@ function chooseType(e) {
         const form = realForm.children[0];
         form.setAttribute('name', 'real-form');
         form.setAttribute('method', 'POST');
+        form.setAttribute('action', '/timeTable');
         realForm.addEventListener('submit', insertNewTaskPeriod);
         console.log(realForm);
     } else if (types[1].checked) {
@@ -54,15 +54,14 @@ function chooseType(e) {
         const form = realForm.children[0];
         form.setAttribute('name', 'real-form');
         form.setAttribute('method', 'POST');
-        realForm.addEventListener('submit', insertNewTaskDdl);
+        form.setAttribute('action', '/timeTable')
+        realForm.addEventListener('submit', insertNewTaskPeriod);
         console.log(realForm);
     } else {
 
     }
 }
 
-formPeriod.addEventListener('submit', insertNewTaskPeriod);
-formDdl.addEventListener('submit', insertNewTaskDdl);
 initilize();
 setDate();
 
@@ -140,7 +139,6 @@ function periodAddToTimetable(date, start, end, inputTask) {
 }
 
 function insertNewTaskPeriod(e) {
-    e.preventDefault();
     console.log(realForm);
     const inputStartTime = document.getElementById('start-period').value;
     const inputEndTime = document.getElementById('end-period').value;
@@ -187,7 +185,6 @@ function insertNewTaskPeriod(e) {
 }
 
 function insertNewTaskDdl(e) {
-    e.preventDefault();
     const inputTask = document.getElementById('task-ddl').value;
     const inputDate = document.getElementById('date-ddl').value;
     const ddl = document.getElementById('ddl').value;
@@ -242,7 +239,6 @@ function ddlAddToTimetable(date, ddl, inputTask) {
 }
 
 function clear(e) {
-    e.preventDefault();
     let item;
     if (e.target.tagName === 'path') {
         item = e.target.parentElement.parentElement.parentElement;
@@ -251,19 +247,20 @@ function clear(e) {
     } else if (e.target.tagName === 'a') {
         item = e.target.parentElement;
     }
-    console.log(item);
+
     const grid = events.get(item);
+    const fakeForm = fakeFormsMap.get(item);
     if (grid !== undefined) {
         grid.remove();
     }
     item.remove();
     events.delete(item);
+    fakeForm.submit();
     initilize();
 }
 
 
 function clearAll(e) {
-    e.preventDefault();
     const tasks = document.querySelector('.collection').children;
     const length = tasks.length
     for (let i = 0, j = 0; i < length; i++) {
@@ -323,7 +320,6 @@ for (let i = 0; i < 3; i++) {
 
 
 function hideTasks(e) {
-    e.preventDefault();
     let title = e.target;
     while(title.tagName !== "LI") {
         title = title.parentElement;
@@ -349,4 +345,4 @@ function addCurrentTime(date, ddl, inputTask) {
     return grid;
 }
 
-addCurrentTime(today, today.getHours() + ":" + today.getMinutes(), "Current Time");
+// addCurrentTime(today, today.getHours() + ":" + today.getMinutes(), "Current Time");
